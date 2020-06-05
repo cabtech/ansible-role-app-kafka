@@ -1,0 +1,14 @@
+# MANAGED_BY_ANSIBLE
+[Unit]
+Requires=zookeeper.service
+After=zookeeper.service
+
+[Service]
+Type=simple
+User={{kafka_user}}
+ExecStart=/bin/sh -c '{{kafka_install_dir}}/bin/kafka-server-start.sh {{kafka_config_dir}}/server.properties > {{kafka_logs_dir}}/kafka.log 2>&1'
+ExecStop={{kafka_install_dir}}/bin/kafka-server-stop.sh
+Restart=on-abnormal
+
+[Install]
+WantedBy=multi-user.target

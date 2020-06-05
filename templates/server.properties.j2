@@ -1,0 +1,23 @@
+broker.id={{ hostvars[inventory_hostname]['ip_pri'].split('.')[2:] | join('') }}
+delete.topic.enable=true
+group.initial.rebalance.delay.ms=0
+log.dirs={{kafka_logs_dir}}
+log.retention.check.interval.ms=300000
+log.retention.hours=168
+log.segment.bytes=1073741824
+num.io.threads=8
+num.network.threads=3
+num.partitions=1
+num.recovery.threads.per.data.dir=1
+offsets.topic.replication.factor=1
+socket.receive.buffer.bytes=102400
+socket.request.max.bytes=104857600
+socket.send.buffer.bytes=102400
+transaction.state.log.min.isr=1
+transaction.state.log.replication.factor=1
+zookeeper.connect=localhost:2181
+{% for ip in zoo_servers %}
+#{{ip}}:2181{{',' if not loop.last else ''}}
+{% endfor %}
+zookeeper.connection.timeout.ms=6000
+
