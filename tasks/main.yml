@@ -1,8 +1,16 @@
 ---
 # --------------------------------
 
-- name: 'Kafka user'
+- name: 'Kafka group'
   group:
+    name: '{{kafka_user}}'
+    state: present
+  become: true
+  tags: ct-kafka
+
+- name: 'Kafka user'
+  user:
+    group: '{{kafka_user}}'
     name: '{{kafka_user}}'
     state: present
   become: true
