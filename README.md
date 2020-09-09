@@ -13,8 +13,8 @@ Installs Apache Kafka
 | kafka_staging_dir | unixPath | /var/tmp/kafka ||
 | kafka_svc_enabled | Boolean | true | whether to start the service at reboot |
 | kafka_svc_state | Boolean | started | whether to start the service now |
-| kafka_tarball | fileName | kafka_${kafka_scala_version}-${kafka_version}.tgz | derived |
-| kafka_url | URI | https://downloads.apache.org/kafka/${kafka_version}/${kafka_tarball} | derived |
+| kafka_tarball | fileName | derived ||
+| kafka_url | URI | derived ||
 | kafka_user | string | kafka | user to run Kafka as |
 | kafka_version | string | '2.3.1' ||
 ...
