@@ -51,8 +51,8 @@
   ignore_errors: '{{ansible_check_mode}}'
   tags: ct-kafka
 
-- name: 'full install block'
-  # BLOCK_START
+# BLOCK_START
+- name: 'block: full install'
   block:
   - name: 'Render Kafka config file'
     template:
@@ -90,7 +90,7 @@
     become: true
     tags: ct-kafka
   when: kafka_full_install
-  # BLOCK_END
+# BLOCK_END
 
 # --------------------------------
 ...
