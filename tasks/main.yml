@@ -51,10 +51,11 @@
 
 - name: 'expand Kafka archive'
   unarchive:
-    src: '{{kafka_staging_dir}}/{{kafka_tarball}}'
     copy: false
+    creates: '{{kafka_config_dir}}/server.properties'
     dest: '{{kafka_install_dir}}'
     extra_opts: ['--strip-components=1']
+    src: '{{kafka_staging_dir}}/{{kafka_tarball}}'
   become: true
   ignore_errors: '{{ansible_check_mode}}'
   tags: ct-kafka
