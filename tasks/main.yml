@@ -59,6 +59,15 @@
   ignore_errors: '{{ansible_check_mode}}'
   tags: ct-kafka
 
+- name: 'update /etc/hosts with internal IP'
+  lineinfile:
+    line: '{{local_ipv4}} {{inventory_hostname}}'
+    path: /etc/hosts
+    regexp: '\d+\.\d+\.\d+\.\d+ {{inventory_hostname}}'
+    state: present
+  become: true
+  tags: ct-kafka
+
 # BLOCK_START
 - name: 'block: full install'
   block:
