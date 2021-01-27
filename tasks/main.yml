@@ -43,9 +43,9 @@
 
 - name: 'download Kafka archive'
   get_url:
-    url: '{{kafka_url}}'
-    dest: '{{kafka_staging_dir}}'
+    dest: '{{kafka_staging_dir}}/{{kafka_tarball}}'
     timeout: '{{kafka_internet_timeout}}'
+    url: '{{kafka_url}}'
     validate_certs: false
   tags: ct-kafka
 
