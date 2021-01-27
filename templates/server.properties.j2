@@ -15,9 +15,5 @@ socket.request.max.bytes=104857600
 socket.send.buffer.bytes=102400
 transaction.state.log.min.isr=1
 transaction.state.log.replication.factor=1
-zookeeper.connect=localhost:2181
-{% for ip in zoo_servers %}
-#{{ip}}:2181{{',' if not loop.last else ''}}
-{% endfor %}
+zookeeper.connect={{kafkaclient_brokers}}
 zookeeper.connection.timeout.ms=6000
-

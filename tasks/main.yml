@@ -79,14 +79,6 @@
     become: true
     tags: ct-kafka
 
-  - name: 'HACK Zookeeper connection string (TODO)'  # TODO
-    lineinfile:
-      line: 'zookeeper.connect={{kafkaclient_brokers}}'
-      path: '{{kafka_config_dir}}/server.properties'
-      regexp: '^zookeeper.connect='
-    become: true
-    tags: ct-kafka
-
   - name: 'render Systemd unit file'
     template:
       src: kafka.service.j2
