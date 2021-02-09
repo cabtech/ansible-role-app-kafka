@@ -1,4 +1,6 @@
-broker.id={{ hostvars[inventory_hostname]['ip_pri'].split('.')[2:] | join('') }}
+# MANAGED_BY_ANSIBLE
+auto.create.topics=false
+broker.id={{kafka_broker_id}}
 delete.topic.enable=true
 group.initial.rebalance.delay.ms=0
 log.dirs={{kafka_logs_dir}}
@@ -15,5 +17,5 @@ socket.request.max.bytes=104857600
 socket.send.buffer.bytes=102400
 transaction.state.log.min.isr=1
 transaction.state.log.replication.factor=1
-zookeeper.connect={{kafkaclient_brokers}}
+zookeeper.connect={{kafka_zookeeper_connections}}
 zookeeper.connection.timeout.ms=6000
