@@ -1,0 +1,7 @@
+---
+- name: 'handler_restart_kafka'
+  systemd:
+    name: kafka
+    state: restarted
+  become: true
+...

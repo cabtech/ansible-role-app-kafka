@@ -1,5 +1,5 @@
 # MANAGED_BY_ANSIBLE
-auto.create.topics=false
+auto.create.topics.enable=false
 broker.id={{kafka_broker_id}}
 delete.topic.enable=true
 group.initial.rebalance.delay.ms=0
@@ -19,3 +19,4 @@ transaction.state.log.min.isr=1
 transaction.state.log.replication.factor=1
 zookeeper.connect={{kafka_zookeeper_connections}}
 zookeeper.connection.timeout.ms=6000
+# end
