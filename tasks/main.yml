@@ -1,106 +1,107 @@
 ---
 # --------------------------------
 
-- name: 'Kafka group'
-  group:
-    name: '{{kafka_user}}'
+- name: "Kafka group"
+  ansible.builtin.group:
+    name: "{{ kafka_user }}"
     state: present
   become: true
-  tags: ct-kafka
+  tags: ["ct-kafka"]
 
-- name: 'Kafka user'
-  user:
-    group: '{{kafka_user}}'
-    name: '{{kafka_user}}'
+- name: "Kafka user"
+  ansible.builtin.user:
+    group: "{{ kafka_user }}"
+    name: "{{ kafka_user }}"
     state: present
   become: true
-  tags: ct-kafka
+  tags: ["ct-kafka"]
 
-- name: 'create Kafka staging dir'
-  file:
-    path: '{{kafka_staging_dir}}'
-    mode: '0755'
+- name: "Create Kafka staging dir"
+  ansible.builtin.file:
+    path: "{{ kafka_staging_dir }}"
+    mode: "0755"
     state: directory
-  tags: ct-kafka
+  tags: ["ct-kafka"]
 
-- name: 'create Kafka install dir'
-  file:
-    path: '{{kafka_install_dir}}'
-    mode: '0755'
-    state: directory
-  become: true
-  tags: ct-kafka
-
-- name: 'create Kafka logs dir'
-  file:
-    path: '{{kafka_logs_dir}}'
-    mode: '0755'
-    owner: '{{kafka_user}}'
-    group: '{{kafka_user}}'
+- name: "Create Kafka install dir"
+  ansible.builtin.file:
+    path: "{{ kafka_install_dir }}"
+    mode: "0755"
     state: directory
   become: true
-  tags: ct-kafka
+  tags: ["ct-kafka"]
 
-- name: 'download Kafka archive'
-  get_url:
-    dest: '{{kafka_staging_dir}}/{{kafka_tarball}}'
-    timeout: '{{kafka_internet_timeout}}'
-    url: '{{kafka_url}}'
+- name: "Create Kafka logs dir"
+  ansible.builtin.file:
+    path: "{{ kafka_logs_dir }}"
+    mode: "0755"
+    owner: "{{ kafka_user }}"
+    group: "{{ kafka_user }}"
+    state: directory
+  become: true
+  tags: ["ct-kafka"]
+
+- name: "Download Kafka archive"
+  ansible.builtin.get_url:
+    dest: "{{ kafka_staging_dir }}/{{ kafka_tarball }}"
+    mode: "0644"
+    timeout: "{{ kafka_internet_timeout }}"
+    url: "{{ kafka_url }}"
     validate_certs: false
-  tags: ct-kafka
+  tags: ["ct-kafka"]
 
-- name: 'expand Kafka archive'
-  unarchive:
+- name: "Expand Kafka archive"
+  ansible.builtin.unarchive:
     copy: false
-    creates: '{{kafka_config_dir}}/server.properties'
-    dest: '{{kafka_install_dir}}'
-    extra_opts: ['--strip-components=1']
-    src: '{{kafka_staging_dir}}/{{kafka_tarball}}'
+    creates: "{{ kafka_config_dir }}/server.properties"
+    dest: "{{ kafka_install_dir }}"
+    extra_opts: ["--strip-components=1"]
+    src: "{{ kafka_staging_dir }}/{{ kafka_tarball }}"
   become: true
-  ignore_errors: '{{ansible_check_mode}}'
-  tags: ct-kafka
+  ignore_errors: "{{ ansible_check_mode }}"
+  tags: ["ct-kafka"]
 
-- name: 'update /etc/hosts with internal IP'
-  lineinfile:
-    line: '{{local_ipv4}} {{inventory_hostname}}'
+- name: "Update /etc/hosts with internal IP"
+  ansible.builtin.lineinfile:
+    line: "{{ local_ipv4 }} {{ inventory_hostname }}"
     path: /etc/hosts
-    regexp: '\d+\.\d+\.\d+\.\d+ {{inventory_hostname}}'
+    regexp: '\d+\.\d+\.\d+\.\d+ {{ inventory_hostname }}'
     state: present
   become: true
-  tags: ct-kafka
+  tags: ["ct-kafka"]
 
 # BLOCK_START
-- name: 'block: full install'
+- name: "Block: full install"
+  when: kafka_full_install
   block:
-  - name: 'Render Kafka config file'
-    template:
+  - name: "Render Kafka config file"
+    ansible.builtin.template:
       src: server.properties.j2
-      dest: '{{kafka_config_dir}}/server.properties'
-      mode: '0644'
-    notify: handler_restart_kafka
+      dest: "{{ kafka_config_dir }}/server.properties"
+      mode: "0644"
+    notify: HandlerRestartKafka
     become: true
-    tags: ct-kafka
+    tags: ["ct-kafka"]
 
-  - name: 'render Systemd unit file'
-    template:
+  - name: "Render Systemd unit file"
+    ansible.builtin.template:
       src: kafka.service.j2
       dest: /etc/systemd/system/kafka.service
       owner: root
       group: root
-      mode: '0600'
+      mode: "0600"
     register: reg_service
     become: true
-    tags: ct-kafka
+    tags: ["ct-kafka"]
 
-  - name: 'enable Kafka service'
-    systemd:
+  - name: "Enable Kafka service"
+    ansible.builtin.systemd:
       name: kafka
-      state: '{{kafka_svc_state}}'
-      enabled: '{{kafka_svc_enabled}}'
-      daemon_reload: '{{reg_service is changed}}'
+      state: "{{ kafka_svc_state }}"
+      enabled: "{{ kafka_svc_enabled }}"
+      daemon_reload: "{{ reg_service is changed }}"
     become: true
-    tags: ct-kafka
-  when: kafka_full_install
+    tags: ["ct-kafka"]
 # BLOCK_END
 
 # --------------------------------

@@ -1,6 +1,6 @@
 ---
-- name: 'handler_restart_kafka'
-  systemd:
+- name: "HandlerRestartKafka"
+  ansible.builtin.systemd:
     name: kafka
     state: restarted
   become: true

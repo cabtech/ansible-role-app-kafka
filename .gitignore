@@ -1,4 +1,4 @@
-.alint
-.ylint
 .ansible/
 src/
+#
+.lint*
