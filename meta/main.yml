@@ -1,3 +1,11 @@
 ---
 dependencies: []
+
+galaxy_info:
+  author: Tim Short
+  description: Installs Apache Kafka
+  license: GPL v3
+  role_name: ansible_role_app_kafka
+  min_ansible_version: "2"
+  namespace: cabtech
 ...
