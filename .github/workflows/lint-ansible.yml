@@ -17,7 +17,7 @@ jobs:
     - name: "Install tools"
       run: uv sync --locked --no-install-project
     - name: "yamllint"
-      run: uv run --no-sync yamllint --strict --config-file=.yamllint .
+      run: uv run --no-sync yamllint --strict --config-file=.config/yamllint .
   ansible-lint:
     runs-on: ubuntu-latest
     steps:
