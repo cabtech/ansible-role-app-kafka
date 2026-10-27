@@ -1,6 +1,6 @@
-.PHONY: clean lint
-
 lint: .lintyaml .lintansible
+
+.PHONY: clean init-uv lint update-uv
 
 .lintansible: */*.yml .config/ansible-lint
 	uv run ansible-lint --config-file=.config/ansible-lint
